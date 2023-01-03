@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	
+</head>
+<body>
+Name of the city :<p id="ville"></p>
+<hr>
+<p id="description"></p>
+<hr>
+<p id="site"></p>
+<hr>
+<p id="hotel"></p>
+<hr>
+<p id="restaurant"></p>
+<hr>
+
+<p id="gare"></p>
+<hr>
+
+<p id="aéroport"></p>
+<hr>
+<script type="text/javascript">
+	
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+const ville = urlParams.get('ville');
+
+document.getElementById("ville").innerHTML = ville;
+remplir(ville);
+function remplir(ville) {
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+    	    Showdescription(xhttp.responseXML);
+    	    ShowSites(xhttp.responseXML);
+            Showdetail(xhttp.responseXML,"hotel");
+            Showdetail(xhttp.responseXML,"restaurant");
+            Showdetail(xhttp.responseXML,"gare");
+            Showdetail(xhttp.responseXML,"aéroport");
+        }
+    };
+    xhttp.open("GET", ville+".xml", true);
+    xhttp.send();
+}
+function Showdetail(xml,balse){
+	var path = "//"+balse;
+	
+    var nodes = xml.evaluate(path, xml, null, XPathResult.ANY_TYPE, null);
+    var result = nodes.iterateNext();
+    var hotels="<ul>"+ balse.charAt(0).toUpperCase() + balse.slice(1)+"s";
+   
+    while(result){
+    	
+    	hotels+='<li>';
+        hotels+=result.innerHTML;//.getElementsByTagName ('hotel')[0].value;
+    	hotels+='</li>';
+    	result = nodes.iterateNext();
+    }
+    hotels+="</ul>";
+    //document.getElementById("listofstudent").innerHTML = txt;
+    document.getElementById(balse).innerHTML=hotels;
+
+    
+
+}
+
+
+function ShowSites(xml){
+	var path = "//site";
+	
+    var nodes = xml.evaluate(path, xml, null, XPathResult.ANY_TYPE, null);
+    var result = nodes.iterateNext();
+    var hotels="<ul>Sites";
+   
+    while(result){
+    	
+    	hotels+='<li>';
+        hotels+=result.getAttribute('nom');
+
+        hotels+='<img src="'+result.getAttribute('photo')+'" width=1000 height=50 alt="no img"/>';
+    	hotels+='<hr></li>';
+    	result = nodes.iterateNext();
+    }
+    hotels+="</ul>";
+    //document.getElementById("listofstudent").innerHTML = txt;
+    document.getElementById("site").innerHTML=hotels;
+
+    
+
+}
+
+
+function Showdescription(xml){
+	var path = "//descriptif";
+	
+    var nodes = xml.evaluate(path, xml, null, XPathResult.ANY_TYPE, null);
+    var result = nodes.iterateNext();
+    var description="<p>Description  :<br>";
+   
+    if(result){
+    	
+    	
+        description+=""+result.innerHTML+"</p>";//.getElementsByTagName ('hotel')[0].value;
+    	
+    }
+    
+    //document.getElementById("listofstudent").innerHTML = txt;
+    document.getElementById("description").innerHTML=description;
+
+    
+
+}
+
+
+
+</script>
+
+
+
+</body>
+</html>

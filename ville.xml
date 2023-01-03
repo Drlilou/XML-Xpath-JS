@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<recherche>
+  <!-- Les continents -->
+  <continents>
+    <continent no="C1" nom="Afrique "/>
+    <continent no="C2" nom="Europe"/>
+  </continents>
+  <!-- Les Pays -->
+  <pays no="C1" nom="Algérie">
+    <villes>
+      <ville nom="Alger">
+        <sites>
+          <site nom="Casbah" photo="Photos/Santa Cruz.jpg"/>
+          <site nom="Bastion 23" photo="Photos/Santa Cruz.jpg"/>
+        </sites>
+      </ville>
+      <ville nom="Blida">
+        <sites>
+          <site nom="chrea" photo="Photos/Santa Cruz.jpg"/>
+        </sites>
+      </ville>
+      <ville nom="Oran">
+        <sites>
+          <site nom="Santa Cruz" photo="Photos/Santa Cruz.jpg"/>
+          <site nom="Bastion 223" photo="Photos/Santa Cruz.jpg"/>
+        </sites>
+      </ville>
+    </villes>
+  </pays>
+  <pays no="C2" nom="Grande Bretagne">
+    <villes>
+      <ville nom="Londres">
+        <sites>
+          <site nom="Big Ben" photo="photos/Santa Cruz.jpg"/>
+          <site nom="Tower Bridge" photo="Photos/Santa Cruz.jpg"/>
+        </sites>
+      </ville>
+    </villes>
+  </pays>
+</recherche>

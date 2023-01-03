@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ville nom="Alger">
+  <descriptif>Située au bord de la mer Méditerranée,….
+  </descriptif>
+  <sites>
+    <site nom="Casbah"     photo="Photos/Santa Cruz.jpg"/>
+    <site nom="Bastion 23" photo="Photos/Santa Cruz.jpg"/>
+  </sites>
+  <hotels>
+    <hotel>El Aurassi
+    </hotel>
+    <hotel>El Djazair
+    </hotel>
+  </hotels>
+  <restaurants>
+    <restaurant>El Nadjah
+    </restaurant>
+    <restaurant>El Bena
+    </restaurant>
+  </restaurants>
+  <gares>
+    <gare>Caroubier
+    </gare>
+  </gares>
+  <aéroports>
+    <aéroport>Houari Boumediene
+      </aéroport>
+    </aéroports>
+</ville>
