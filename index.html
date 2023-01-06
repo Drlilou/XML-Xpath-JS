@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <title>XML Project</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css" />
+  <!-- Google Fonts Roboto -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" />
+  <!-- MDB -->
+  <link rel="stylesheet" href="css/mdb.min.css" />
+  
+  <!-- Custom styles -->
+  <link rel="stylesheet" href="css/admin.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw=="
+    crossorigin="anonymous"></script>
+</head>
+
+<style type="text/css">
+  .container1{
+  position: relative;
+  text-align: center;
+  color: white;
+}
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+</style>
+<body> 
+  <!--Main Navigation  onload='remplirData()'-->
+  <header>
+    <!-- Sidebar -->
+    <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white" style="margin-top:-70px">
+      <div class="position-sticky">
+        <div class="list-group list-group-flush mx-3 mt-4" id="listofstudent">
+       
+          <script type="text/javascript">
+             remplirData();
+             function remplirData() {
+                        var xhttp = new XMLHttpRequest();
+                        xhttp.onreadystatechange = function () {
+                            if (this.readyState == 4 && this.status == 200) {
+                                showinformation(xhttp.responseXML);
+                            }
+                        };
+                        xhttp.open("GET", "Config.xml", true);
+                        xhttp.send();
+                    }
+                    function showinformation(xml) {
+                        spath = "//information/students/student";
+                        var nodes = xml.evaluate(spath, xml, null, XPathResult.ANY_TYPE, null);
+                        var result = nodes.iterateNext();
+                        var txt = "";
+                        var i = 1;
+                        var css='<p style="margin-bottom: 1px;"> <a href="#" style="font-weight: bold;" class=" list-group-item-action "><span> ' ;
+                        while (result) {
+                            txt += "<ul>Student " + i;
+                            txt += css+ 'Nom :'  + result.getElementsByTagName('nom')[0].innerHTML              + '</span></a></p>';
+                            txt += css+ "Prénom :" + result.getElementsByTagName('prenom')[0].innerHTML         + '</span></a></p>';
+                            txt += css+ "specialite :" + result.getElementsByTagName('specialite')[0].innerHTML + '</span></a></p>';
+                            txt += css+ "Section:" + result.getElementsByTagName('section')[0].innerHTML        + '</span></a></p>';
+                            txt += css+ "Group  :" + result.getElementsByTagName('group')[0].innerHTML          + '</span></a></p>';
+                            txt += css+ "Email  :" + result.getElementsByTagName('email')[0].innerHTML          + '</span></a></p>';
+                            txt += "</ul>";
+                            i += 1
+                            result = nodes.iterateNext();
+                        }
+                        txt+=`
+                        <hr>
+                        <button class="button btn-success form-control"  style="font-weight: bold; text-align: center;" class="list-group-item list-group-item-action py-2 ripple "><i class="fas fa-plus"></i>
+                        Ajouter Ville </button>
+
+                        `
+                        document.getElementById("listofstudent").innerHTML = txt;
+                        spath = "//titre";
+                        var nodes = xml.evaluate(spath, xml, null, XPathResult.ANY_TYPE, null);
+                        var result = nodes.iterateNext();
+                        txt2 = "";
+                       
+                        /*
+                    */
+                        if (result) {
+                          txt2+=`<img src="`+result.getAttribute('image')+`" 
+                          width="1000px" height="200px">
+                            <div class="centered">
+                            <h3>`+ result.getAttribute("title") + ` </h3>
+                            </div>
+                          `;
+                            
+                        }
+
+                        document.getElementById("imageofproject").innerHTML = txt2;
+                        //console.log(txt3);
+                        //document.getElementById("projectTitle").innerHTML   = txt3;
+                    }
+          </script>
+       
+
+          
+          
+        
+
+          
+
+         
+        
+
+                
+
+          
+        </div>
+      </div>
+    </nav>
+    <!-- Sidebar -->
+
+
+
+
+
+
+  </header>
+  <!--Main Navigation-->
+
+  <!--Main layout-->
+  <main >
+
+
+
+
+    
+<!-- header -->
+<div class="container pt-4" style="margin-top:-15px">
+  <div class="row">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
+      <div class="container1" >
+              <p id='imageofproject'></p>
+      </div>  
+
+    </div>
+    <div class="col-md-1"></div>
+  </div>
+<hr>
+
+</div>
+<!-- end header -->
+
+
+<!-- section -->
+<div class="container pt-4">
+   <h5 style="text-align:center; font-weight: bold; color: blue;" ><i class="fas fa-search text-blue"></i>  Recherche</h4>
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+
+     
+      <form>
+  <!-- 2 column grid layout with text inputs for the first and last names -->
+  <div class="row mb-4">
+    <div class="col">
+      <div class="form-outline">
+        <input type="text" id="continent" class="form-control" />
+        <label class="form-label" for="form3Example1">Continent</label>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-outline">
+        <input type="text" id="pays" class="form-control" />
+        <label class="form-label" for="form3Example2">Pays</label>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="row mb-4">
+    <div class="col">
+      <div class="form-outline">
+        <input type="text" id="ville" class="form-control" />
+        <label class="form-label" for="form3Example1">Ville</label>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-outline">
+        <input type="text" id="site" class="form-control" />
+        <label class="form-label" for="form3Example2">Site</label>
+      </div>
+    </div>
+  </div>
+
+
+  <button  class="btn btn-primary btn-block mb-4" onclick="remplir()" type='button'>Valider</button>
+  <script type="text/javascript">
+                    //remplir();
+                    function remplir() {
+
+                        var xhttp = new XMLHttpRequest();
+                        xhttp.onreadystatechange = function () {
+                            if (this.readyState == 4 && this.status == 200) {
+                                showResult(xhttp.responseXML);
+                            }
+                        };
+                        xhttp.open("GET", "ville.xml", true);
+                        xhttp.send();
+                    }
+                    function showResult(xml) {
+
+                        var txt = '<tbody>';
+                        var c = document.getElementById('continent').value.toLowerCase();
+                        var p = document.getElementById('pays').value.toLowerCase();
+                        var v = document.getElementById('ville').value.toLowerCase();
+                        var s = document.getElementById('site').value.toLowerCase();
+                        var cpath = "//recherche/continents/continent[contains(translate(@nom,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'" + c + "')]";
+                        var nodes = xml.evaluate(cpath, xml, null, XPathResult.ANY_TYPE, null);
+                        var result = nodes.iterateNext();
+                        var i = 1;
+                        while (result) {
+                            var no = result.getAttribute("no");
+                            var co = result.getAttribute("nom");
+                            var ppath = "//recherche/pays[contains(translate(@nom,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'" + p + "') and @no='" + no + "']";
+                            var nodesP = xml.evaluate(ppath, xml, null, XPathResult.ANY_TYPE, null);
+                            var resultP = nodesP.iterateNext();
+                            while (resultP) {
+                                var spath = "//recherche/pays[@no='" + no + "']/villes/ville[contains(translate(@nom,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'" + v + "')]/sites/site[contains(translate(@nom,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'" + s + "')]/../..";
+                                var nodesV = xml.evaluate(spath, xml, null, XPathResult.ANY_TYPE, null);
+                                var resultV = nodesV.iterateNext();
+                                while (resultV) {
+                                    txt+=`<tr>
+                                        <th scope="row">`+i+`</th>`;
+                                    i+=1;
+                                    txt += "<td><a href='detail.html?ville="+resultV.getAttribute("nom")+"'>" + resultV.getAttribute("nom") + "</a>";
+                                    var payspath = "//recherche/pays/villes/ville[@nom='" + resultV.getAttribute("nom") + "']/../..";
+                                    var nodespays = xml.evaluate(payspath, xml, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+                                    txt += "(" + nodespays.getAttribute("nom") + ") </td>";
+                                    txt +=`<td><a style="margin-right:10px" href='edit.php?id=5'><i class="fas fa-pen text-success"></i></a>
+                                      <a href='supp.php?id=5'><i class="fas fa-trash-alt text-danger"></i></a>
+                                      </td>
+                                    </tr>`;
+                                    resultV = nodesV.iterateNext();
+                                }
+                                resultP = nodesP.iterateNext();
+                            }
+                            result = nodes.iterateNext();
+                        }
+                        txt += "</tbody>"
+                        //console.log(txt);
+                        document.getElementById("bodyoftable").innerHTML = txt;
+                    }
+                    /*function deleteVille(ville){
+                      var xhttp = new XMLHttpRequest();
+                      xhttp.onreadystatechange = function() {
+                          if (this.readyState == 4 && this.status == 200) {
+                              deleteBalise(xhttp.responseXML,ville);
+                          }
+                      };
+                      xhttp.open("GET", "ville.xml", true);
+                      xhttp.send();
+
+                      }
+                        
+                      function deleteBalise(xml,ville) {
+                         
+                        var path="//ville[@nom='"+ville+"']";
+                        let element = xml.evaluate(path, xml, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+                        element.singleNodeValue.remove();
+                        console.log(typeof(element));
+                      }*/
+                        
+                    
+                </script>
+</form>
+
+
+
+
+
+    </div>
+    <div class="col-md-3"></div>
+
+  </div>
+  <hr>
+</div>
+<!--  end section -->
+
+
+
+
+<!-- section 2 -->
+<div class="container pt-4">
+   <h5 style="text-align:center; font-weight: bold; color: blue;" ><i class="fas fa-poll-h"></i>  Résultat de la Recherche</h6>
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <table class="table" >
+  <thead style="text-align:center;font-weight: bold;">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Ville (pay)</th>
+      <th scope="col"><i class="fas fa-cogs"></i></th>
+    </tr>
+  </thead>
+  <tbody style="text-align:center;" id='bodyoftable'></tbody>
+    
+</table>
+    </div>
+    <div class="col-md-3"></div>
+
+  </div>
+</div>
+
+<!-- end section 2 -->
+
+
+
+  </main>
+  <!--Main layout-->
+  <!-- MDB -->
+  <script type="text/javascript" src="js/mdb.min.js"></script>
+  <!-- Custom scripts -->
+  
+</body>
+
+</html>
+
+

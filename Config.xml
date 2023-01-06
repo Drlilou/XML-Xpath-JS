@@ -21,6 +21,6 @@
 		</student>
 	</students>
 	<header>
-		<titre image="Photos/Santa Cruz.jpg">title of project</titre>
+		<titre image="Photos/i1.png" title="title of project" />
 	</header>	
 </information>
