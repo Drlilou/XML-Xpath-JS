@@ -43,7 +43,16 @@
         <div class="list-group list-group-flush mx-3 mt-4" id="listofstudent">
        
           <script type="text/javascript">
+
              remplirData();
+             /*
+              cette function sert a lire le contenu de fichie config.xml
+              recupere le nom des etudiants , titre de projet et image de l'agence 
+              et mettre dans le code dans le position qu'on a specifie precedement.
+              le function faire verifier l'existance de fichier config.
+              si il exist il fait appel a function showinformation
+
+             */
              function remplirData() {
                         var xhttp = new XMLHttpRequest();
                         xhttp.onreadystatechange = function () {
@@ -55,16 +64,27 @@
                         xhttp.send();
                     }
                     function showinformation(xml) {
+                        // req xpath pour recupere les etudiatns;
                         spath = "//information/students/student";
+                        //evaluer le requete
                         var nodes = xml.evaluate(spath, xml, null, XPathResult.ANY_TYPE, null);
+                        // recueper premier element 
                         var result = nodes.iterateNext();
+                        // txt sera remplit par les info des etudiant
                         var txt = "";
+                        //indice de l'etudiant
                         var i = 1;
+                        // style appliquer sur tt les etudiants 
                         var css='<p style="margin-bottom: 1px;"> <a href="#" style="font-weight: bold;" class=" list-group-item-action "><span> ' ;
+                        // tq y un etudiant, 
                         while (result) {
+                            // creer list non ordonne , mettre le nom student + l'indice de ce dernier
                             txt += "<ul>Student " + i;
+                            // ajouter le nom 
                             txt += css+ 'Nom :'  + result.getElementsByTagName('nom')[0].innerHTML              + '</span></a></p>';
+                            // ajoyter prenom
                             txt += css+ "Prénom :" + result.getElementsByTagName('prenom')[0].innerHTML         + '</span></a></p>';
+                            //ajouter spec ..
                             txt += css+ "specialite :" + result.getElementsByTagName('specialite')[0].innerHTML + '</span></a></p>';
                             txt += css+ "Section:" + result.getElementsByTagName('section')[0].innerHTML        + '</span></a></p>';
                             txt += css+ "Group  :" + result.getElementsByTagName('group')[0].innerHTML          + '</span></a></p>';
@@ -73,21 +93,28 @@
                             i += 1
                             result = nodes.iterateNext();
                         }
+                        // ajouter le bution que sert a ajouter le button de creation d'un villee
                         txt+=`
                         <hr>
                         <button class="button btn-success form-control"  style="font-weight: bold; text-align: center;" class="list-group-item list-group-item-action py-2 ripple "><i class="fas fa-plus"></i>
                         Ajouter Ville </button>
 
                         `
+                        // mise a jour le contenu de objet qui a le id listofstudent
                         document.getElementById("listofstudent").innerHTML = txt;
+                        //req sert a recupere le titre + img de l'agence
                         spath = "//titre";
+                        // exute la req
                         var nodes = xml.evaluate(spath, xml, null, XPathResult.ANY_TYPE, null);
+                        // recuperer les info de titre
                         var result = nodes.iterateNext();
                         txt2 = "";
                        
                         /*
-                    */
+                        vue que y a une seul titre , on a pas besoin de utilser while (par contre cas precedeent, on doit utliser while)
+                        */
                         if (result) {
+                          // recuer path de liamge + titre
                           txt2+=`<img src="`+result.getAttribute('image')+`" 
                           width="1000px" height="200px">
                             <div class="centered">
@@ -96,7 +123,7 @@
                           `;
                             
                         }
-
+                        // mise a jour le contenu de composant avec id : imageofproject
                         document.getElementById("imageofproject").innerHTML = txt2;
                         //console.log(txt3);
                         //document.getElementById("projectTitle").innerHTML   = txt3;
@@ -199,6 +226,13 @@
   <button  class="btn btn-primary btn-block mb-4" onclick="remplir()" type='button'>Valider</button>
   <script type="text/javascript">
                     //remplir();
+                    /*
+                      cette finction recupere la result de recherche effectuer par user;
+                      au premier temps , on lire le contenu de fichier ville.xml
+                      recuperer les valuer saisir par user, 
+                      retouver  les ville qui satisifeir les  condition.
+
+                    */
                     function remplir() {
 
                         var xhttp = new XMLHttpRequest();
@@ -213,44 +247,69 @@
                     function showResult(xml) {
 
                         var txt = '<tbody>';
+                       // recuper les valeur saisir (continet, ;paus , ville est site)
+
+                        // les valuer recupere transformaer a miniscule 
                         var c = document.getElementById('continent').value.toLowerCase();
                         var p = document.getElementById('pays').value.toLowerCase();
                         var v = document.getElementById('ville').value.toLowerCase();
                         var s = document.getElementById('site').value.toLowerCase();
+                        // req pour recuperer continent voulez
+                        // rec tt les continent contenet le text saisir par user en ignorant l'ecriture ( majuscule ou minsucle)
                         var cpath = "//recherche/continents/continent[contains(translate(@nom,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'" + c + "')]";
+                        // excute la requete
                         var nodes = xml.evaluate(cpath, xml, null, XPathResult.ANY_TYPE, null);
+                        //recupere les continent
                         var result = nodes.iterateNext();
                         var i = 1;
+                        // ya une possiblite qu y a plus de 1 continent ,alors on utilise while pour rec les continent
+                        // pour chaque , en  recupere les ville pertinent  
                         while (result) {
+                           // recupere les info de la continent
                             var no = result.getAttribute("no");
                             var co = result.getAttribute("nom");
+                            // requiere les pays pertinet aparitent de continent current 
                             var ppath = "//recherche/pays[contains(translate(@nom,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'" + p + "') and @no='" + no + "']";
                             var nodesP = xml.evaluate(ppath, xml, null, XPathResult.ANY_TYPE, null);
+                            //recupere pays 
                             var resultP = nodesP.iterateNext();
+                            //pour chaque pays de conteniet acutelle, recuperer les ville pertinent  (repond aux besoin de user)
                             while (resultP) {
+                                // autre fois , on utilie une req pour recupere la  list des ville pertinent
+                                // a l'aide de pays actuelle , la req utilise la ville et site saisir par user, 
+                                // ../../ sert a recuperer  le contenu du balise ville.
                                 var spath = "//recherche/pays[@no='" + no + "']/villes/ville[contains(translate(@nom,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'" + v + "')]/sites/site[contains(translate(@nom,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'" + s + "')]/../..";
                                 var nodesV = xml.evaluate(spath, xml, null, XPathResult.ANY_TYPE, null);
                                 var resultV = nodesV.iterateNext();
+                                // tjr y a bcp des ville, alors while est utilsé.
                                 while (resultV) {
                                     txt+=`<tr>
                                         <th scope="row">`+i+`</th>`;
                                     i+=1;
+                                    // ajouter le nom de ville au txt
                                     txt += "<td><a href='detail.html?ville="+resultV.getAttribute("nom")+"'>" + resultV.getAttribute("nom") + "</a>";
+                                    // recuperer le nom de pays.
                                     var payspath = "//recherche/pays/villes/ville[@nom='" + resultV.getAttribute("nom") + "']/../..";
                                     var nodespays = xml.evaluate(payspath, xml, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+                                    // ajouter le nom ed pays entre ().
                                     txt += "(" + nodespays.getAttribute("nom") + ") </td>";
                                     txt +=`<td><a style="margin-right:10px" href='edit.php?id=5'><i class="fas fa-pen text-success"></i></a>
                                       <a href='supp.php?id=5'><i class="fas fa-trash-alt text-danger"></i></a>
                                       </td>
                                     </tr>`;
+                                    // passer vers la ville suivante.
                                     resultV = nodesV.iterateNext();
                                 }
+                                //passer vers pays suivant
                                 resultP = nodesP.iterateNext();
                             }
+                            //passer vers continet suivant
                             result = nodes.iterateNext();
                         }
+                        //completer le tableau.
                         txt += "</tbody>"
                         //console.log(txt);
+                        // remplir le table des results et afficher resultat dans le composant avec id : bodyoftable
                         document.getElementById("bodyoftable").innerHTML = txt;
                     }
                     /*function deleteVille(ville){
