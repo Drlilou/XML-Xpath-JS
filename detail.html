@@ -10,30 +10,40 @@
 	
 </head>
 <body>
+    <!-- composnat contenant le nom de ville -->
 Name of the city :<p id="ville"></p>
 <hr>
+// <!-- composnat contenant le description de ville -->
 <p id="description"></p>
 <hr>
+// <!-- composnat contenant les site de ville -->
 <p id="site"></p>
 <hr>
+
+// <!-- composnat contenant les hotels de ville -->
 <p id="hotel"></p>
 <hr>
+
+// <!-- composnat contenant les restaurant de ville -->
 <p id="restaurant"></p>
 <hr>
 
+// <!-- composnat contenant les gares de ville -->
 <p id="gare"></p>
 <hr>
 
+// <!-- composnat contenant les aeroport de ville -->
 <p id="aéroport"></p>
 <hr>
 <script type="text/javascript">
-	
+// le nom de ville est passe dans le url 
+// on le recupere par les 3 ligne suivant	
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const ville = urlParams.get('ville');
-
+// remplir le nomde ville 
 document.getElementById("ville").innerHTML = ville.toUpperCase() ;
-
+//appel au function sert a remplir les info de la ville 
 remplir(ville);
 function remplir(ville) {
 
@@ -51,30 +61,37 @@ function remplir(ville) {
     xhttp.open("GET", ville+".xml", true);
     xhttp.send();
 }
+//function sert  recupere les balise avec nom de balise 
+//icon sert a afficher l'icon pertienent.
+ //cet function est applicable pour recupere resuatant , gare, aeroport .et hotel,
 function Showdetail(xml,balse,icon){
+    //requete 
 	var path = "//"+balse;
-	
+	// recueper les donnee de la balise
     var nodes = xml.evaluate(path, xml, null, XPathResult.ANY_TYPE, null);
     var result = nodes.iterateNext();
-    var hotels="<ul>"+'<i class="fas fa-'+icon+'"></i> &nbsp;&nbsp;&nbsp;' +balse.charAt(0).toUpperCase() + balse.slice(1)+"s";
+    // content : var contient les nom de balise, +ses sous balise comme list nonordornee
+    var content="<ul>"+'<i class="fas fa-'+icon+'"></i> &nbsp;&nbsp;&nbsp;' +balse.charAt(0).toUpperCase() + balse.slice(1)+"s";
    
     while(result){
     	
-    	hotels+='<li>';
-        hotels+=result.innerHTML;//.getElementsByTagName ('hotel')[0].value;
-    	hotels+='</li>';
-    	result = nodes.iterateNext();
+    	content+='<li>';
+        content+=result.innerHTML;//.getElementsByTagName ('hotel')[0].value;
+    	content+='</li>';
+    	content = nodes.iterateNext();
     }
-    hotels+="</ul>";
+    content+="</ul>";
     //document.getElementById("listofstudent").innerHTML = txt;
-    document.getElementById(balse).innerHTML=hotels;
+    // remplir le champs
+    document.getElementById(balse).innerHTML=content;
 
     
 
 }
 
-
+//fincton sert a recupere les sites
 function ShowSites(xml){
+    //requette
 	var path = "//site";
 	
     var nodes = xml.evaluate(path, xml, null, XPathResult.ANY_TYPE, null);
